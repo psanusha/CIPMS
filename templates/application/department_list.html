@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        {#        <div class="bg-light fw-bolder fs-2 py-3">Departments</div>#}
+        <div class="bg-light fw-bolder fs-2 py-3 px-3">
+            {% if department %}Create Department{% else %} Departments{% endif %}
+            <a href="{% url 'dashboard' %}" class="float-end text-decoration-none fs-4 fw-normal"><< Back</a>
+        </div>
+
+        {#<a href="{% url 'department_create' %}">Create Department</a>#}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Department</th>
+                <th scope="col">Active</th>
+                <th scope="col">Created By</th>
+                <th scope="col">Created On</th>
+                <th scope="col"></th>
+                
+            </tr>
+            </thead>
+            <tbody>
+            {% for department in departments %}
+                <tr>
+                    <td>{{ department.name }}</td>
+                    <td>{{ department.is_active }}</td>
+                    <td>{{ department.created_by.username }}</td>
+                    <td>{{ department.created_on }}</td>
+                    <td>
+                        <a href="{% url 'department_delete' department.id %}" class="text-decoration-none">
+                            <i class="fa-solid fa-delete-left"></i>
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="bg-light fw-bolder fs-2 py-3 px-3">
+            {% if post %}Edit Post{% else %}Create Post{% endif %}
+            <a href="{% url 'dashboard' %}" class="float-end text-decoration-none fs-4 fw-normal"><< Back</a>
+        </div>
+
+        <div class="row">
+        
+            <div class="col">
+                <form method="post" enctype="multipart/form-data" class="mt-3" style="width: 60%">
+                    {% csrf_token %}
+
+                    <div class="mb-3 fw-bolder">
+                        <label for="title" class="form-label">Title:</label>
+                        <input type="text" name="title" id="title" class="form-control"
+                               value="{% if post %}{{ post.title }}{% endif %}"
+                               required><br>
+                    </div>
+
+                    <div class="mb-3 fw-bolder">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea name="description" id="description" class="form-control" required>{% if post %}
+                            {{ post.description }}{% endif %}</textarea>
+                    </div>
+
+                    <div class="mb-3 fw-bolder">
+                        <label for="image" class="form-label ">Image:</label>
+                        <input type="file" name="images" id="images" class="form-control" multiple>
+                    </div>
+
+                    <div class="mb-3 fw-bolder">
+                        <label for="schedule_date" class="form-label">Schedule Date:</label>
+                        <input type="datetime-local" name="schedule_date" id="schedule_date" value="
+                            {% if post and post.schedule_date %}{{ post.schedule_date|date:"Y-m-d\TH:i" }}{% endif %}">
+                    </div>
+
+                    <div class="mb-3 fw-bolder">
+                        <label for="processed_date" class="form-label">Processed Date:</label>
+                        <input type="datetime-local" name="processed_date" id="processed_date" value="
+                            
+                                {% if post and post.processed_date %}{{ post.processed_date|date:"Y-m-d\TH:i" }}{% endif %}">
+                    </div>
+
+                    <div class="mb-3 fw-bolder w-50">
+                        <label for="published" class="form-label "
+                               aria-label="Default select example">Published:</label>
+                        <select class="form-select" aria-label="Default select example" name="published" id="published">
+                            <option value="0" {% if post and not post.is_promoted %}selected{% endif %}>Yes</option>
+                            <option value="1" {% if post and post.is_promoted %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+
+                    <div class=" mb-3 fw-bolder w-50">
+                        <label for="department" class="form-label "
+                               aria-label="Default select example">Department: </label>
+                        <select class="form-select" aria-label="Default select example" name="department"
+                                id="department"
+                                required>
+                            {% for department in departments %}
+                                <option value="{{ department.id }}"
+                                        {% if post and post.department.id == department.id %}selected{% endif %}>{{ department.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3 fw-bolder w-50">
+                        <label for="is_promoted" class="form-label " aria-label="Default select example">Is
+                            Promoted:</label>
+                        <select class="form-select" aria-label="Default select example" name="is_promoted"
+                                id="is_promoted">
+                            <option value="0" {% if post and not post.is_promoted %}selected{% endif %}>Unpaid</option>
+                            <option value="1" {% if post and post.is_promoted %}selected{% endif %}>Paid</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        {% if post.id %}
+                            Update
+                        {% else %}
+                            Create
+                        {% endif %}
+                    </button>
+
+                </form>
+            </div>
+            <div class="col">
+
+                {% if post and post.images.exists %}
+                    <div>
+                        {% for image in post.images.all %}
+                            <div>
+                                <img src="{{ image.image.url }}" alt="Post image" style="max-width: 200px;">
+                                <a href="{% url 'delete_post_image' image.id %}">Delete</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

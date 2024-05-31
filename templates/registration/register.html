@@ -1,0 +1,61 @@
+{#<!-- templates/registration/register.html -->#}
+{##}
+{#<h2>Register</h2>#}
+{#<form method="post">#}
+{#    {% csrf_token %}#}
+{#    <label for="username">Username:</label>#}
+{#    <input type="text" name="username" required><br>#}
+{#    <label for="email">Email:</label>#}
+{#    <input type="email" name="email" required><br>#}
+{#    <label for="phone_number">Phone Number:</label>#}
+{#    <input type="text" name="phone_number" required><br>#}
+{#    <label for="password">Password:</label>#}
+{#    <input type="password" name="password" required><br>#}
+{#    <button type="submit">Register</button>#}
+{#</form>#}
+{#{% if messages %}#}
+{#<ul>#}
+{#    {% for message in messages %}#}
+{#    <li>{{ message }}</li>#}
+{#    {% endfor %}#}
+{#</ul>#}
+{#{% endif %}#}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+</head>
+<body>
+
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+        <h2 class = custom-font>Register</h2>
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" name="phone_number" required><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="bg-light fw-bolder fs-2 py-3 px-3 mb-5">
+            {% if post %}Post List{% else %}Post List{% endif %}
+            <a href="{% url 'dashboard' %}" class="float-end text-decoration-none fs-4 fw-normal"><< Back</a>
+        </div>
+
+        {% for post in posts %}
+            <div class="row border mb-3">
+                <div class="col">
+                    <div class="mb-3 mt-2">
+                        <div class="mb-3">
+                            <div class="w-50">
+                                <div class="fw-bold fs-4">{{ post.title }}
+                                    <div class="float-end fw-normal fs-6">
+                                        <a href="{% url 'post_update' post.id %}" class="text-decoration-none mx-3">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                            Edit
+                                        </a>
+
+                                        <a href="{% url 'post_delete' post.id %}" class="text-decoration-none mx-3">
+                                            <i class="fa-solid fa-delete-left"></i>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">Description:
+                                <span>{{ post.description }}</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold"> Department:
+                                <span>{{ post.department.name }}</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">Promoted:
+                                <span>{% if post.is_promoted %}Paid{% else %}Unpaid{% endif %}</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="fw-bold ">Published:
+                                <span>{% if post.is_published %}Yes{% else %}No{% endif %}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col text-center">
+                    {% for image in post.images.all %}
+                        <img class="img-thumbnail m-2 mt-3" src="{{ image.image.url }}"
+                             alt="Image for {{ post.title }}"
+                             style="max-width: 200px; max-height: 200px;">
+                    {% endfor %}
+                </div>
+
+                <div class="row">
+
+                    <div class="col">
+                        <div class="fw-bold">Posted on:</div>
+                        <div class="w-50">
+                            <div class="form-control mb-3">{{ post.post_date }}</div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="fw-bold">Scheduled on:</div>
+                        <div class="w-50">
+                            <div class="form-control mb-3">{{ post.schedule_date }}</div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="fw-bold">Processed on:</div>
+                        <div class="w-50">
+                            <div class="form-control mb-3">{{ post.processed_date }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+
+{% endblock content %}
+
+
+
+{#    <h1>Post List</h1>#}
+{#    <a href="{% url 'post_create' %}">Create Post</a>#}
